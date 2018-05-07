@@ -31,10 +31,23 @@ class game1 : public eosio::contract {
   enum GameStatus { waiting, open, deadline, closed };
   
 public:
-  game1(account_name self) : contract(self) {}
+  game1(account_name self) :
+    contract(self),
+    bets(_self, _self),
+    games(_self, _self),
+    players(_self, _self){}
 
   //@abi action
   void newgame(const uint64_t o) {
+  }
+
+  //@abi action
+  void newuser(const string login, const string pass) {
+    eosio_assert(login.size() < 6, "Login name too small");
+    eosio_assert(pass.size() < 9, "Password too small");
+
+    
+    
   }
   
 private:
@@ -49,11 +62,10 @@ private:
     EOSLIB_SERIALIZE( game,
 		      (id)
 		      (owner)
-		      ///(name)
-		      )
-  };
+		      (name))
+  };  
+  typedef eosio::multi_index< N(game), game> game_index;
   
-  /*
   //@abi table bet i64
   struct bet {
     uint64_t          id;
@@ -64,21 +76,33 @@ private:
 
     uint64_t primary_key()const { return id; }
 
-    EOSLIB_SERIALIZE( bet, (id)(idgame)(iduser)(team1)(team1))
+    EOSLIB_SERIALIZE( bet,
+		      (id)
+		      (idgame)
+		      (iduser)
+		      (team1)
+		      (team1))
   };
-
+  typedef eosio::multi_index< N(bet), bet> bet_index;
+  
   //@abi table player i64
   struct player {
     uint64_t          id;
-    char              login[20];
-    char              passhash[36];
+    string            login;
+    string            passhash;
 
     uint64_t primary_key()const { return id; }
 
-    EOSLIB_SERIALIZE( player, (id)(login)(passhash))
+    EOSLIB_SERIALIZE( player,
+		      (id)
+		      (login)
+		      (passhash))
   };
-  */
-  
+  typedef eosio::multi_index< N(player), player> player_index;
+
+  bet_index bets;
+  game_index games;
+  player_index players;
 };
 
-EOSIO_ABI( game1, (newgame) )
+EOSIO_ABI( game1, (newgame) (newuser))
