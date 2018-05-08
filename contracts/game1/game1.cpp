@@ -93,12 +93,18 @@ private:
 
     uint64_t primary_key()const { return id; }
 
+    string get_secondary()const { return login; }
+
+    bool operator<(const player &p) { return id < p.id; } 
+
     EOSLIB_SERIALIZE( player,
 		      (id)
 		      (login)
 		      (passhash))
   };
-  typedef eosio::multi_index< N(player), player> player_index;
+  typedef eosio::multi_index< N(player), player,
+			      indexed_by< N(login), const_mem_fun<player, std::string, &player::get_secondary> >
+			      > player_index;
 
   bet_index bets;
   game_index games;

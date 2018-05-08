@@ -185,6 +185,13 @@
      )
      (i32.const 0)
     )
+    (i32.store8
+     (i32.add
+      (get_local $3)
+      (i32.const 156)
+     )
+     (i32.const 0)
+    )
     (block $label$2
      (block $label$3
       (br_if $label$3
