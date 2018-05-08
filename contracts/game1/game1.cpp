@@ -42,12 +42,20 @@ public:
   }
 
   //@abi action
-  void newuser(const string login, const string pass) {
+  void newplayer(const string login, const string pass) {
     eosio_assert(login.size() < 6, "Login name too small");
     eosio_assert(pass.size() < 9, "Password too small");
 
+    /*    player_index ptable( _self, login );
+    auto existing = ptable.find( login );
+    eosio_assert( existing == ptable.end(), "player login already exists" );
+    */
     
-    
+    players.emplace( _self, [&]( auto& s ) {
+	s.keylogin = N(login);
+	s.login = login;
+	s.passhash = pass;
+    });
   }
   
 private:
@@ -88,12 +96,13 @@ private:
   //@abi table player i64
   struct player {
     uint64_t          id;
+    uint64_t          keylogin;
     string            login;
     string            passhash;
 
     uint64_t primary_key()const { return id; }
 
-    string get_secondary()const { return login; }
+    uint64_t get_secondary()const { return keylogin; }
 
     bool operator<(const player &p) { return id < p.id; } 
 
@@ -102,8 +111,8 @@ private:
 		      (login)
 		      (passhash))
   };
-  typedef eosio::multi_index< N(player), player,
-			      indexed_by< N(login), const_mem_fun<player, std::string, &player::get_secondary> >
+  typedef eosio::multi_index< N(player), player
+			      ,indexed_by< N(keylogin), const_mem_fun<player, uint64_t, &player::get_secondary> >
 			      > player_index;
 
   bet_index bets;
@@ -111,4 +120,4 @@ private:
   player_index players;
 };
 
-EOSIO_ABI( game1, (newgame) (newuser))
+EOSIO_ABI( game1, (newgame) (newplayer))
