@@ -128,7 +128,13 @@ private:
   bet_index bets;
   game_index games;
   player_index players;
+
+  /**
+   * config.set(tconfig{application}, _self); // set singleton 
+   * config.get().application();              // get singleton
+   */ 
   state_config config;
+
 };
 
 EOSIO_ABI( game1, (newgame) (newplayer))
