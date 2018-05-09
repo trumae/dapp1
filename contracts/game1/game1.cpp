@@ -43,15 +43,16 @@ public:
 
   //@abi action
   void newplayer(const string login, const string pass) {
-    eosio_assert(login.size() < 6, "Login name too small");
-    eosio_assert(pass.size() < 9, "Password too small");
+    eosio_assert(login.size() > 6, "Login name too small");
+    eosio_assert(pass.size() > 9, "Password too small");
 
     /*    player_index ptable( _self, login );
     auto existing = ptable.find( login );
     eosio_assert( existing == ptable.end(), "player login already exists" );
     */
     
-    players.emplace( _self, [&]( auto& s ) {
+    players.emplace( _self, [&]( auto& s ) { 
+	s.id = players.available_primary_key();
 	s.keylogin = N(login);
 	s.login = login;
 	s.passhash = pass;
@@ -106,6 +107,7 @@ private:
 
     EOSLIB_SERIALIZE( player,
 		      (id)
+		      (keylogin)
 		      (login)
 		      (passhash))
   };

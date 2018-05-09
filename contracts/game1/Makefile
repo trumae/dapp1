@@ -10,4 +10,4 @@ clean:
 	rm -f *~ *.o *.wast *.abi
 
 deploy: all
-	cleos -u http://127.0.0.1:8888/ set contract eosio ../game1 -p eosio
+	cleos -u http://127.0.0.1:8888/ set contract game1 ../game1 -p game1

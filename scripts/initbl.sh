@@ -23,4 +23,4 @@ cleos -u ${URL} create account eosio tester  EOS7rMZfsA4yucaLyuEzAiBrhKj221qABT5
 # cleos -u ${URL} create account eosio eosio.msig  EOS7rMZfsA4yucaLyuEzAiBrhKj221qABT5zuKqtsq1Q1a1iVxe8M EOS7rMZfsA4yucaLyuEzAiBrhKj221qABT5zuKqtsq1Q1a1iVxe8M
 # cleos -u ${URL} set contract eosio.msig sio.msig -p eosio.msig
 
-
+cleos -u ${URL} create account eosio game1  EOS7rMZfsA4yucaLyuEzAiBrhKj221qABT5zuKqtsq1Q1a1iVxe8M EOS7rMZfsA4yucaLyuEzAiBrhKj221qABT5zuKqtsq1Q1a1iVxe8M
