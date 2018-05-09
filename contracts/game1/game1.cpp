@@ -20,6 +20,7 @@
 #include <eosiolib/eosio.hpp>
 #include <eosiolib/asset.hpp>
 #include <eosiolib/contract.hpp>
+#include <eosiolib/singleton.hpp>
 #include <eosiolib/crypto.h>
 #include <eosiolib/eosio.hpp>
 #include <ctime>
@@ -35,7 +36,8 @@ public:
     contract(self),
     bets(_self, _self),
     games(_self, _self),
-    players(_self, _self){}
+    players(_self, _self),
+    config(_self, _self){}
 
   //@abi action
   void newgame(const uint64_t o) {
@@ -115,9 +117,18 @@ private:
 			      ,indexed_by< N(keylogin), const_mem_fun<player, uint64_t, &player::get_secondary> >
 			      > player_index;
 
+
+  struct tconfig {
+	  account_name application;
+
+	  EOSLIB_SERIALIZE( tconfig, (application) )
+  };
+  typedef singleton<N(tconfigs), tconfig>  state_config;
+
   bet_index bets;
   game_index games;
   player_index players;
+  state_config config;
 };
 
 EOSIO_ABI( game1, (newgame) (newplayer))
