@@ -104,8 +104,6 @@ private:
 
     uint64_t get_secondary()const { return keylogin; }
 
-    bool operator<(const player &p) { return id < p.id; } 
-
     EOSLIB_SERIALIZE( player,
 		      (id)
 		      (login)
