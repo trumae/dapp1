@@ -28,16 +28,13 @@
 using namespace std;
 using namespace eosio;
 
+
 class game1 : public eosio::contract {
   enum GameStatus { waiting, open, deadline, closed };
   
 public:
   game1(account_name self) :
-    contract(self),
-    bets(_self, _self),
-    games(_self, _self),
-    players(_self, _self),
-    config(_self, _self){}
+    contract(self){}
 
   //@abi action
   void newgame(const uint64_t o) {
@@ -48,20 +45,41 @@ public:
     eosio_assert(login.size() > 6, "Login name too small");
     eosio_assert(pass.size() > 9, "Password too small");
 
-    /*    player_index ptable( _self, login );
-    auto existing = ptable.find( login );
-    eosio_assert( existing == ptable.end(), "player login already exists" );
-    */
+    player_index players(_self, _self);    
+    auto p = players.find(STN(login));
+    eosio_assert(p == players.end(), "This name is already used");
     
     players.emplace( _self, [&]( auto& s ) { 
-	s.id = players.available_primary_key();
-	s.keylogin = N(login);
+	//s.id = players.available_primary_key();
+	//s.keylogin = N(login);
+	s.id = STN(login); 
 	s.login = login;
 	s.passhash = pass;
     });
   }
   
 private:
+  static constexpr uint64_t STN(const string& str ) {
+	  uint32_t len = 0;
+	  while( str[len] ) ++len;
+
+	  uint64_t value = 0;
+	  for( uint32_t i = 0; i <= 12; ++i ) {
+		  uint64_t c = 0;
+		  if( i < len && i <= 12 ) c = uint64_t(char_to_symbol( str[i] ));
+
+		  if( i < 12 ) {
+			  c &= 0x1f;
+			  c <<= 64-5*(i+1);
+		  }
+		  else {
+			  c &= 0x0f;
+		  }
+		  value |= c;
+	  }
+	  return value;
+  }
+
   //@abi table game i64
   struct game {
     uint64_t          id;
@@ -99,22 +117,22 @@ private:
   //@abi table player i64
   struct player {
     uint64_t          id;
-    uint64_t          keylogin;
+    //uint64_t        keylogin;
     string            login;
     string            passhash;
 
     uint64_t primary_key()const { return id; }
 
-    uint64_t get_secondary()const { return keylogin; }
+    //uint64_t get_secondary()const { return keylogin; }
 
     EOSLIB_SERIALIZE( player,
 		      (id)
-		      (keylogin)
+		      //(keylogin)
 		      (login)
 		      (passhash))
   };
   typedef eosio::multi_index< N(player), player
-			      ,indexed_by< N(keylogin), const_mem_fun<player, uint64_t, &player::get_secondary> >
+			      ///,indexed_by< N(keylogin), const_mem_fun<player, uint64_t, &player::get_secondary> >
 			      > player_index;
 
 
@@ -125,15 +143,14 @@ private:
   };
   typedef singleton<N(tconfigs), tconfig>  state_config;
 
-  bet_index bets;
-  game_index games;
-  player_index players;
+  //bet_index bets;
+  //game_index games;
 
   /**
    * config.set(tconfig{application}, _self); // set singleton 
    * config.get().application();              // get singleton
    */ 
-  state_config config;
+  //state_config config;
 
 };
 
