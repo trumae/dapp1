@@ -8,10 +8,11 @@ var config = {
 	debug: false,
 };
 
+var login = "";
+var password = "";
 
 $( document ).ready(function() {
 	M.AutoInit();
-
 	eos = Eos.Localnet(config);  
 });
 
@@ -47,13 +48,30 @@ function gotoForm(frm) {
 	$("#"+frm).show();
 }
 
-function login() {
+function onLogin() {
+    var user = $("#login").val();
+    var p1 = $("#password").val();
+
+    eos.getTableRows({
+	"json": true,
+	"scope": "game1",
+	"code": "game1",
+	"table": "player",
+	"limit": 500
+    }).then(result => {
+	console.log(result);
 	gotoForm("homeForm");
+    }).catch(function(exception) {
+	if(exception) {
+	    alert(exception);
+	}
+    });
+  
 }
 
-function register() {
-	$("input").val("");
-	gotoForm("registerForm");
+function onRegister() {
+    $("input").val("");
+    gotoForm("registerForm");
 }
 
 function onRegisterOk() {
@@ -83,3 +101,25 @@ function onRegisterOk() {
 function onRegisterCancel() {
 	gotoForm("loginForm");
 }
+
+function STN(str) { 
+    var len = str.length;
+    
+    var value = 0;
+    for(i = 0; i <= 12; ++i ) {
+	var c = 0;
+	if( i < len && i <= 12 ) c = str.charCodeAt(i); /* uint64_t(char_to_symbol( str[i] )); */
+	
+	if( i < 12 ) {
+	    c &= 0x1f;
+	    c <<= 64-5*(i+1);
+	}
+	else {
+	    c &= 0x0f;
+	}
+	value |= c;
+    }
+    
+    return value;
+}
+
