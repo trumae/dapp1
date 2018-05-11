@@ -84,30 +84,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
     <script src="eos.js"></script>
     
-    <script>
-        /// eos.contract('game1').then(contract => { contract.newplayer('vvmaciel2', '222211111111111111'); });
-      
+    <script>        
         var eos;
 
 	var config = {
- 	   keyProvider: 'PW5K2yV6oyTDmhyqB2cLFMHgKR2Nxw3eSQekxF8y3xMMFduesLTJz', 
+ 	   keyProvider: "5KEFmzRkaWXZh2XF3SkPenzsGMrfdJvDGapmjBbKwZrGfU2ZWxa", 
 	   httpEndpoint: 'http://192.168.0.111:8888',
-  	   ///httpEndpoint: 'http://127.0.0.1:8888',
 	   expireInSeconds: 60,
-	   broadcast: false,
-	   debug: true,
-	   sign: true
-	}
+	   broadcast: true,
+	   debug: false,
+	};
 
-	options = {
-	   broadcast: false,
-	}
 	
 	$( document ).ready(function() {
            M.AutoInit();
 
 	   eos = Eos.Localnet(config);  
 	});
+
+	function addUser(ulogin, password) {
+  	    eos.contract('game1').then(contract => 
+  	       contract.newplayer({login: ulogin, pass: password},
+	                          {authorization: "game1"}));
+	}
 	
 	function gotoForm(frm) {
 	   $(".appform").hide();

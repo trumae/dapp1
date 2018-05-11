@@ -10,4 +10,4 @@ clean:
 	rm -f *~ *.o *.wast *.abi
 
 deploy: all
-	cleos -u http://127.0.0.1:8888/ set contract game1 ../game1 -p game1
+	cleos -u http://192.168.0.111:8888/ --wallet-url http://192.168.0.111:8899 set contract game1 ../game1 -p game1
