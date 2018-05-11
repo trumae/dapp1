@@ -102,10 +102,20 @@
 	   eos = Eos.Localnet(config);  
 	});
 
-	function addUser(ulogin, password) {
+	function addPlayer(ulogin, password) {
   	    eos.contract('game1').then(contract => 
   	       contract.newplayer({login: ulogin, pass: password},
 	                          {authorization: "game1"}));
+	}
+
+	function getPlayers() {
+	   eos.getTableRows({
+	      "json": true,
+	      "scope": "game1",
+	      "code": "game1",
+	      "table": "player",
+	      "limit": 500
+	   }).then(result => { console.log(result); })
 	}
 	
 	function gotoForm(frm) {
