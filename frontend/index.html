@@ -82,12 +82,33 @@
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-
+    <script src="eos.js"></script>
+    
     <script>
-	$( document ).ready(function() {
-           M.AutoInit();          
-	});
+        /// eos.contract('game1').then(contract => { contract.newplayer('vvmaciel2', '222211111111111111'); });
+      
+        var eos;
 
+	var config = {
+ 	   keyProvider: 'PW5K2yV6oyTDmhyqB2cLFMHgKR2Nxw3eSQekxF8y3xMMFduesLTJz', 
+	   httpEndpoint: 'http://192.168.0.111:8888',
+  	   ///httpEndpoint: 'http://127.0.0.1:8888',
+	   expireInSeconds: 60,
+	   broadcast: false,
+	   debug: true,
+	   sign: true
+	}
+
+	options = {
+	   broadcast: false,
+	}
+	
+	$( document ).ready(function() {
+           M.AutoInit();
+
+	   eos = Eos.Localnet(config);  
+	});
+	
 	function gotoForm(frm) {
 	   $(".appform").hide();
 	   $("#"+frm).show();
