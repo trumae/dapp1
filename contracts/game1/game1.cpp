@@ -53,6 +53,7 @@ public:
 	s.id = STN(login); 
 	s.login = login;
 	s.passhash = hashloginpass(login, pass);
+	s.balance = 1000;
     });
   }
   
@@ -135,6 +136,7 @@ private:
     //uint64_t        keylogin;
     string            login;
     checksum256       passhash;
+    uint64_t          balance;
 
     uint64_t primary_key()const { return id; }
 
@@ -144,7 +146,8 @@ private:
 		      (id)
 		      //(keylogin)
 		      (login)
-		      (passhash))
+		      (passhash)
+		      (balance))
   };
   typedef eosio::multi_index< N(player), player
 			      ///,indexed_by< N(keylogin), const_mem_fun<player, uint64_t, &player::get_secondary> >
