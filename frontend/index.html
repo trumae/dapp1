@@ -53,20 +53,27 @@
 	<form class="col s4 offset-s4">	  
 	  <div class="row">	    
 	    <div class="input-field col s12">
-	      <input class="validate" placeholder="Login name" type="text" id="login">
-	      <label for="login">Login name</label>
+	      <input class="validate" placeholder="Login name" type="text" id="rlogin">
+	      <label for="rlogin">Login name</label>
 	    </div>	    
 	  </div>
 	  
 	  <div class="row">	    
 	    <div class="input-field col s12">
-	      <input class="validate" placeholder="Password" type="password" id="password">
-	      <label for="password">Password</label>
+	      <input class="validate" placeholder="Password" type="password" id="rpassword">
+	      <label for="rpassword">Password</label>
 	    </div>	    
 	  </div>
 	  
-	  <a href="javascript:login()" class="btn waves-effect waves-light">Log in</a>
-	  <a href="javascript:register()" class="btn waves-effect waves-light orange">Register</a>	  
+	  <div class="row">	    
+	    <div class="input-field col s12">
+	      <input class="validate" placeholder="Password again" type="password" id="rpassword2">
+	      <label for="rpassword2">Password again</label>
+	    </div>	    
+	  </div>
+
+	  <a href="javascript:onRegisterOk()" class="btn waves-effect waves-light">Create</a>
+	  <a href="javascript:onRegisterCancel()" class="btn waves-effect waves-light orange">Cancel</a>	  
 	</form>
       </div>
 	    
@@ -83,54 +90,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
     <script src="eos.js"></script>
-    
-    <script>        
-        var eos;
-
-	var config = {
- 	   keyProvider: "5KEFmzRkaWXZh2XF3SkPenzsGMrfdJvDGapmjBbKwZrGfU2ZWxa", 
-	   httpEndpoint: 'http://192.168.0.111:8888',
-	   expireInSeconds: 60,
-	   broadcast: true,
-	   debug: false,
-	};
-
-	
-	$( document ).ready(function() {
-           M.AutoInit();
-
-	   eos = Eos.Localnet(config);  
-	});
-
-	function addPlayer(ulogin, password) {
-  	    eos.contract('game1').then(contract => 
-  	       contract.newplayer({login: ulogin, pass: password},
-	                          {authorization: "game1"}));
-	}
-
-	function getPlayers() {
-	   eos.getTableRows({
-	      "json": true,
-	      "scope": "game1",
-	      "code": "game1",
-	      "table": "player",
-	      "limit": 500
-	   }).then(result => { console.log(result); })
-	}
-	
-	function gotoForm(frm) {
-	   $(".appform").hide();
-	   $("#"+frm).show();
-	}
-	
-	function login() {
-	   gotoForm("homeForm");
-	}
-
-	function register() {
-	   gotoForm("registerForm");
-	}
-    </script>
+    <script src="app.js"></script>
   </body>
 </html>
 
