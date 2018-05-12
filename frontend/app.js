@@ -8,12 +8,37 @@ var config = {
 	debug: false,
 };
 
+function hashloginpass(login, pass) {
+    var saltpass = "salt@!#@@";
+    //checksum256 ret;
+
+    ss = login + "_" + pass + saltpass;
+
+    var hash = sha256.create();
+    hash.update(ss);
+
+    return hash.hex();
+}
+
+/* function to index generate */
+var prime___ = 9999999999299;
+function cppjsindex(s) {
+    var r = 1;
+    for (var i=0; i < s.length; i++) {
+	r *= s.charCodeAt(i);
+	r ++;
+	r = r % prime___;
+    }
+    return r;
+}
+
+var {api, ecc, json, Fcbuffer, format} = Eos.modules
 var login = "";
 var password = "";
 
 $( document ).ready(function() {
-	M.AutoInit();
-	eos = Eos.Localnet(config);  
+    M.AutoInit();
+    eos = Eos.Localnet(config);
 });
 
 function addPlayer(ulogin, password) {
@@ -25,7 +50,6 @@ function addPlayer(ulogin, password) {
 											     }
 										     })
 }
-
 
 function getPlayers() {
 	eos.getTableRows({
@@ -57,16 +81,21 @@ function onLogin() {
 	"scope": "game1",
 	"code": "game1",
 	"table": "player",
-	"limit": 500
-    }).then(result => {
-	console.log(result);
-	gotoForm("homeForm");
+	"table_key": cppjsindex(user).toString(), 
+    }).then(result => {	
+	h = result.rows[0].passhash;
+	hlocal = hashloginpass(user, p1);
+	if (h == hlocal) {
+	    gotoForm("homeForm");
+	} else {
+	    M.toast({html: 'Login/password fail!'});
+	    $("#password").val("");
+	}
     }).catch(function(exception) {
 	if(exception) {
 	    alert(exception);
 	}
     });
-  
 }
 
 function onRegister() {
@@ -84,6 +113,12 @@ function onRegisterOk() {
 	   return;
    }
 
+    try {
+	format.encodeName(user);
+    } catch (exc) {
+	M.toast({html: 'Name should be less than 13 characters and only contains the following symbol .12345abcdefghijklmnopqrstuvwxyz'});
+	return;
+    }
 
    eos.contract('game1')
 	   .then(contract => 
@@ -100,26 +135,5 @@ function onRegisterOk() {
 
 function onRegisterCancel() {
 	gotoForm("loginForm");
-}
-
-function STN(str) { 
-    var len = str.length;
-    
-    var value = 0;
-    for(i = 0; i <= 12; ++i ) {
-	var c = 0;
-	if( i < len && i <= 12 ) c = str.charCodeAt(i); /* uint64_t(char_to_symbol( str[i] )); */
-	
-	if( i < 12 ) {
-	    c &= 0x1f;
-	    c <<= 64-5*(i+1);
-	}
-	else {
-	    c &= 0x0f;
-	}
-	value |= c;
-    }
-    
-    return value;
 }
 
