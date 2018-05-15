@@ -1,0 +1,1 @@
+cleos -u http://192.168.0.111:8888/ --wallet-url http://192.168.0.111:8899 system newaccount --stake-net "1000.000 EOS" --stake-cpu "1000.000 EOS" --buy-ram-bytes 10000 eosio bysystem  EOS7rMZfsA4yucaLyuEzAiBrhKj221qABT5zuKqtsq1Q1a1iVxe8M EOS7rMZfsA4yucaLyuEzAiBrhKj221qABT5zuKqtsq1Q1a1iVxe8M

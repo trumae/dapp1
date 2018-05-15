@@ -1,7 +1,8 @@
 var eos;
 
 var config = {
-	keyProvider: "5KEFmzRkaWXZh2XF3SkPenzsGMrfdJvDGapmjBbKwZrGfU2ZWxa", 
+	keyProvider: ["5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3",
+	              "5KEFmzRkaWXZh2XF3SkPenzsGMrfdJvDGapmjBbKwZrGfU2ZWxa"],
 	httpEndpoint: 'http://192.168.0.111:8888',
 	expireInSeconds: 60,
 	broadcast: true,
@@ -77,11 +78,12 @@ function onLogin() {
     var p1 = $("#password").val();
 
     eos.getTableRows({
-	"json": true,
-	"scope": "game1",
-	"code": "game1",
-	"table": "player",
-	"table_key": cppjsindex(user).toString(), 
+	    "json": true,
+	    "scope": "game1",
+	    "code": "game1",
+	    "table": "player",
+	    "table_key": "id",
+	    "lower_bound" : cppjsindex(user), "limit" : 1,
     }).then(result => {	
 	h = result.rows[0].passhash;
 	hlocal = hashloginpass(user, p1);
