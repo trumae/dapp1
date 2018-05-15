@@ -84,6 +84,11 @@ function onLogin() {
 	    "table_key": "id",
 	    "lower_bound" : cppjsindex(user), "limit" : 1,
     }).then(result => {	
+	if (result.rows.length == 0) {
+	    M.toast({html: 'Login/password fail!'});
+	    $("#password").val("");
+	    return;
+	}
 	h = result.rows[0].passhash;
 	hlocal = hashloginpass(user, p1);
 	if (h == hlocal) {
