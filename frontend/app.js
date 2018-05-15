@@ -1,8 +1,7 @@
 var eos;
 
 var config = {
-	keyProvider: ["5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3",
-	              "5KEFmzRkaWXZh2XF3SkPenzsGMrfdJvDGapmjBbKwZrGfU2ZWxa"],
+	keyProvider: "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3",
 	httpEndpoint: 'http://192.168.0.111:8888',
 	expireInSeconds: 60,
 	broadcast: true,
