@@ -1,0 +1,14 @@
+digraph G {
+	rankdir=LR;
+	labelloc="b";
+	peripheries=0;
+
+	init[shape=point]
+	waiting[shape="circle"];
+	open[shape="circle"];
+	deadline[shape="circle"];
+	closed[shape="doublecircle"];
+
+	init -> waiting -> open -> deadline -> closed;
+	
+}	
