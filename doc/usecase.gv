@@ -1,0 +1,45 @@
+digraph G {
+	rankdir=LR;
+	labelloc="b";
+	peripheries=0;
+	
+	/* Actor Nodes */	
+	node [shape=plaintext, color=white];
+
+	subgraph clusterPlayer { player};
+	player [shapefile="stick.png"];
+
+	subgraph clusterPromoter {promoter};
+	promoter [shapefile="stick.png"];
+
+
+	/* Use Case Nodes */
+	
+	node [shape=ellipse, style=solid, color=black];
+	
+	sign_up [label="Sign up"];
+	new_game [label="New game"];
+	bet [label="Bet"];
+	finalize [label="Finalize"];
+	
+
+	/* Edges */
+	
+	edge  [arrowhead="oarrow"];
+	
+	promoter->player;
+
+	
+	edge [arrowhead=none];
+
+	player -> sign_up;
+	player -> bet;
+
+	promoter -> new_game;
+	promoter -> finalize;
+	
+
+	/*	
+	edge [arrowtail="vee", label="<<extend>>", style=dashed];
+	*/
+}

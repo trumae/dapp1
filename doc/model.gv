@@ -1,0 +1,46 @@
+graph models_diagram{
+	graph[rankdir=LR, overlap=false, splines=true];
+	node [shape=record, fontsize=9, fontname="Verdana"];
+	edge [style=dashed];
+	
+	game [shape=none, margin=0, label=<
+		<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+		<tr><td bgcolor="lightblue">Game</td></tr>
+		<tr><td port="0" align="left">uint64_t id</td></tr>
+		<tr><td port="1" align="left">uint64_t promoter</td></tr>
+		<tr><td port="2" align="left">std::string description</td></tr>
+		<tr><td port="3" align="left">eosio::time_point_sec created_at</td></tr>
+		<tr><td port="4" align="left">eosio::time_point_sec init_at</td></tr>
+		<tr><td port="5" align="left">eosio::time_point_sec bet_until</td></tr>
+		<tr><td port="6" align="left">std::string team1</td></tr>
+		<tr><td port="7" align="left">std::string team2</td></tr>
+		<tr><td port="8" align="left">uint64_t bet_value</td></tr>
+		<tr><td port="9" align="left">bool searchable</td></tr>
+		<tr><td port="10" align="left">uint8_t promoter_fee</td></tr>
+		<tr><td port="11" align="left">game_status status</td></tr>			
+		</table>>];
+
+	bet [shape=none, margin=0, label=<
+		<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+		<tr><td bgcolor="lightblue">Bet</td></tr>
+		<tr><td port="0" align="left">uint64_t id</td></tr>
+		<tr><td port="1" align="left">uint64_t idplayer</td></tr>
+		<tr><td port="2" align="left">uint64_t idgame</td></tr>
+		<tr><td port="3" align="left">uint8_t  score1</td></tr>
+		<tr><td port="4" align="left">uint8_t  score2</td></tr>
+		</table>>];
+
+	player [shape=none, margin=0, label=<
+		<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+		<tr><td bgcolor="lightblue">Player</td></tr>
+		<tr><td port="0" align="left">uint64_t    id</td></tr>
+		<tr><td port="1" align="left">std::string login</td></tr>
+		<tr><td port="2" align="left">checksum256 passhash</td></tr>
+		<tr><td port="3" align="left">uint64_t    balance</td></tr>
+		</table>>];
+	
+	game:0 -- bet:2;
+	player:0 -- bet:1;
+	player:0 -- game:1;
+}
+
