@@ -21,6 +21,7 @@ digraph G {
 	new_game [label="New game"];
 	bet [label="Bet"];
 	finalize [label="Finalize"];
+	transfer [label="Transfer"]
 	
 
 	/* Edges */
@@ -34,6 +35,7 @@ digraph G {
 
 	player -> sign_up;
 	player -> bet;
+	player -> transfer;	
 
 	promoter -> new_game;
 	promoter -> finalize;
